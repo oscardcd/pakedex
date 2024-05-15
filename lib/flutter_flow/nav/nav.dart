@@ -51,16 +51,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         FFRoute(
           name: 'pokeList',
           path: '/pokeList',
-          builder: (context, params) => PokeListWidget(
-            pokemonsLenght: params.getParam(
-              'pokemonsLenght',
-              ParamType.int,
-            ),
-            pokemonIndex: params.getParam(
-              'pokemonIndex',
-              ParamType.int,
-            ),
-          ),
+          builder: (context, params) => const PokeListWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );

@@ -1,5 +1,7 @@
 import 'dart:convert';
+import '../schema/structs/index.dart';
 
+import '/flutter_flow/flutter_flow_util.dart';
 import 'api_manager.dart';
 
 export 'api_manager.dart' show ApiCallResponse;
@@ -12,6 +14,7 @@ class PokeApiGroup {
   static String baseUrl = 'https://pokeapi.co/api/v2/';
   static Map<String, String> headers = {};
   static PokemonCall pokemonCall = PokemonCall();
+  static GetPokemonListCall getPokemonListCall = GetPokemonListCall();
 }
 
 class PokemonCall {
@@ -31,6 +34,33 @@ class PokemonCall {
       alwaysAllowBody: false,
     );
   }
+}
+
+class GetPokemonListCall {
+  Future<ApiCallResponse> call() async {
+    return ApiManager.instance.makeApiCall(
+      callName: 'getPokemonList',
+      apiUrl: '${PokeApiGroup.baseUrl}pokemon/?fset=1&limit=250',
+      callType: ApiCallType.GET,
+      headers: {},
+      params: {},
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      alwaysAllowBody: false,
+    );
+  }
+
+  List<PokemonStruct>? pokemons(dynamic response) => (getJsonField(
+        response,
+        r'''$.results''',
+        true,
+      ) as List?)
+          ?.withoutNulls
+          .map((x) => PokemonStruct.maybeFromMap(x))
+          .withoutNulls
+          .toList();
 }
 
 /// End pokeApi Group Code
