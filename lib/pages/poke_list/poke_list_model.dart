@@ -1,3 +1,4 @@
+import '/backend/api_requests/api_calls.dart';
 import '/backend/schema/structs/index.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'poke_list_widget.dart' show PokeListWidget;
@@ -20,6 +21,8 @@ class PokeListModel extends FlutterFlowModel<PokeListWidget> {
   ///  State fields for stateful widgets in this page.
 
   final unfocusNode = FocusNode();
+  // Stores action output result for [Backend Call - API (pokemon)] action in pokeList widget.
+  ApiCallResponse? apiResultPk;
   // State field(s) for TextField widget.
   FocusNode? textFieldFocusNode;
   TextEditingController? textController;
