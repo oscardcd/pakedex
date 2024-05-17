@@ -18,6 +18,18 @@ class PokeListModel extends FlutterFlowModel<PokeListWidget> {
 
   int pokemonIndex = 1;
 
+  List<PokemonStruct> pokemonSearch = [];
+  void addToPokemonSearch(PokemonStruct item) => pokemonSearch.add(item);
+  void removeFromPokemonSearch(PokemonStruct item) =>
+      pokemonSearch.remove(item);
+  void removeAtIndexFromPokemonSearch(int index) =>
+      pokemonSearch.removeAt(index);
+  void insertAtIndexInPokemonSearch(int index, PokemonStruct item) =>
+      pokemonSearch.insert(index, item);
+  void updatePokemonSearchAtIndex(
+          int index, Function(PokemonStruct) updateFn) =>
+      pokemonSearch[index] = updateFn(pokemonSearch[index]);
+
   ///  State fields for stateful widgets in this page.
 
   final unfocusNode = FocusNode();
