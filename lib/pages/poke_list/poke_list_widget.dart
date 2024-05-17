@@ -1,10 +1,12 @@
 import '/backend/api_requests/api_calls.dart';
 import '/backend/schema/structs/index.dart';
+import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'poke_list_model.dart';
 export 'poke_list_model.dart';
 
@@ -20,6 +22,8 @@ class _PokeListWidgetState extends State<PokeListWidget>
   late PokeListModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  final animationsMap = <String, AnimationInfo>{};
 
   @override
   void initState() {
@@ -57,6 +61,27 @@ class _PokeListWidgetState extends State<PokeListWidget>
 
     _model.textController ??= TextEditingController();
     _model.textFieldFocusNode ??= FocusNode();
+
+    animationsMap.addAll({
+      'containerOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 960.0.ms,
+            begin: const Offset(-100.0, 0.0),
+            end: const Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+    });
+    setupAnimations(
+      animationsMap.values.where((anim) =>
+          anim.trigger == AnimationTrigger.onActionTrigger ||
+          !anim.applyInitialState),
+      this,
+    );
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
@@ -108,13 +133,7 @@ class _PokeListWidgetState extends State<PokeListWidget>
                       '_model.textController',
                       const Duration(milliseconds: 2000),
                       () async {
-                        setState(() {
-                          _model.pokeList = _model.pokeList
-                              .where(
-                                  (e) => e.name == _model.textController.text)
-                              .toList()
-                              .cast<PokemonStruct>();
-                        });
+                        setState(() {});
                       },
                     ),
                     obscureText: false,
@@ -223,12 +242,9 @@ class _PokeListWidgetState extends State<PokeListWidget>
                                   context.pushNamed(
                                     'PokemonPage',
                                     pathParameters: {
-                                      'pokemonId': serializeParam(
-                                        valueOrDefault<String>(
-                                          _model.pokemonIndex.toString(),
-                                          '1',
-                                        ),
-                                        ParamType.String,
+                                      'pokemon': serializeParam(
+                                        pokemonItem,
+                                        ParamType.DataStruct,
                                       ),
                                     }.withoutNulls,
                                     extra: <String, dynamic>{
@@ -355,7 +371,8 @@ class _PokeListWidgetState extends State<PokeListWidget>
                                     ),
                                   ),
                                 ),
-                              ),
+                              ).animateOnPageLoad(animationsMap[
+                                  'containerOnPageLoadAnimation']!),
                             );
                           },
                         );

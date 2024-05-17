@@ -40,11 +40,13 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         ),
         FFRoute(
           name: 'PokemonPage',
-          path: '/pokemon/:pokemonId',
+          path: '/pokemon/:pokemon',
           builder: (context, params) => PokemonPageWidget(
-            pokemonId: params.getParam(
-              'pokemonId',
-              ParamType.String,
+            pokemon: params.getParam(
+              'pokemon',
+              ParamType.DataStruct,
+              isList: false,
+              structBuilder: PokemonStruct.fromSerializableMap,
             ),
           ),
         ),
