@@ -40,27 +40,20 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         ),
         FFRoute(
           name: 'PokemonPage',
-          path: '/pokemon/:pokemonId',
+          path: '/pokemon/:pokemon',
           builder: (context, params) => PokemonPageWidget(
-            pokemonId: params.getParam(
-              'pokemonId',
-              ParamType.String,
+            pokemon: params.getParam(
+              'pokemon',
+              ParamType.DataStruct,
+              isList: false,
+              structBuilder: PokemonStruct.fromSerializableMap,
             ),
           ),
         ),
         FFRoute(
           name: 'pokeList',
           path: '/pokeList',
-          builder: (context, params) => PokeListWidget(
-            pokemonsLenght: params.getParam(
-              'pokemonsLenght',
-              ParamType.int,
-            ),
-            pokemonIndex: params.getParam(
-              'pokemonIndex',
-              ParamType.int,
-            ),
-          ),
+          builder: (context, params) => const PokeListWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
